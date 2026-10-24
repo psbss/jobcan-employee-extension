@@ -1,0 +1,21 @@
+{
+  "name": "jobcan-employee-extension",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@12.15.0",
+  "scripts": {
+    "build": "rm -rf dist && mkdir -p dist && cp -R public/. dist/ && esbuild src/content.ts --bundle --format=iife --target=es2024 --outfile=dist/content.js",
+    "typecheck": "tsc",
+    "test": "vitest run",
+    "lint": "biome check src test",
+    "lint:fix": "biome check --write src test",
+    "lint:ext": "web-ext lint --source-dir dist"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "2.6.2",
+    "esbuild": "^0.28.2",
+    "typescript": "^7.0.2",
+    "vitest": "^5.0.5",
+    "web-ext": "^8.0.0"
+  }
+}
