@@ -3,6 +3,7 @@
 	"name": "残労働時間 for ジョブカン（非公式）",
 	"version": "0.0.1",
 	"description": "ジョブカン勤怠管理の出勤簿に、月規定労働時間に対する累計・残り時間・残り平均時間を表示する非公式の拡張機能です。株式会社DONUTSとは関係ありません。",
+	"homepage_url": "https://github.com/psbss/jobcan-employee-extension/",
 	"icons": {
 		"16": "icons/icon-16.png",
 		"32": "icons/icon-32.png",

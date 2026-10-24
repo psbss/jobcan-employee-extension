@@ -1,3 +1,9 @@
+/*
+    This Source Code Form is subject to the terms of the Mozilla Public
+    License, v. 2.0. If a copy of the MPL was not distributed with this
+    file, You can obtain one at https://mozilla.org/MPL/2.0/.
+*/
+
 /** 出勤簿の 1 日分の入力 */
 export type DayRecord = {
 	/** 月内の日（1〜31） */
