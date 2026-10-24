@@ -1,0 +1,30 @@
+{
+	"manifest_version": 3,
+	"name": "ジョブカン勤怠管理 残労働時間",
+	"version": "0.0.1",
+	"description": "ジョブカン勤怠管理の出勤簿に、月規定労働時間に対する累計・残り時間・残り平均時間を表示します。",
+	"icons": {
+		"16": "icons/icon-16.png",
+		"32": "icons/icon-32.png",
+		"48": "icons/icon-48.png",
+		"96": "icons/icon-96.png",
+		"128": "icons/icon-128.png"
+	},
+	"content_scripts": [
+		{
+			"matches": ["https://ssl.jobcan.jp/employee/attendance*"],
+			"js": ["content.js"],
+			"css": ["content.css"],
+			"run_at": "document_idle"
+		}
+	],
+	"browser_specific_settings": {
+		"gecko": {
+			"id": "jobcan-remaining-hours@example.com",
+			"strict_min_version": "109.0",
+			"data_collection_permissions": {
+				"required": ["none"]
+			}
+		}
+	}
+}

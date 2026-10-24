@@ -1,0 +1,16 @@
+/* 拡張機能が追加した列 */
+.jce-col {
+	background-color: rgba(13, 110, 253, 0.06);
+}
+
+/* 規定時間の達成・超過 */
+.jce-over {
+	color: #198754;
+	font-weight: bold;
+}
+
+/* 1日平均が閾値を超えている */
+.jce-warn {
+	color: #dc3545;
+	font-weight: bold;
+}
