@@ -195,6 +195,55 @@ describe("calculate", () => {
 		expect(results[5]?.remainingWorkDays).toBe(0);
 	});
 
+	it("1 日平均が基準（規定 ÷ 労働日数）を超えると averageAboveStandard", () => {
+		// 基準は 40:00 ÷ 労働日 5 日 = 8:00。3 日時点で残り 1470 分 ÷ 3 日 = 490 分
+		const results = calculate(week(), 40 * H, displayed, {
+			...displayed,
+			day: 3,
+		});
+		expect(results[2]?.averageMinutes).toBe(490);
+		expect(results[2]?.averageAboveStandard).toBe(true);
+	});
+
+	it("基準ちょうどなら averageAboveStandard にしない（休日は労働日数に含めない）", () => {
+		// 基準は 40:00 ÷ 5 日 = 480 分（休日も数えると 7 日で 343 分になり、超えてしまう）
+		// 1 日時点で残り 1920 分 ÷ 4 日 = 480 分
+		const results = calculate(week(), 40 * H, displayed, {
+			...displayed,
+			day: 1,
+		});
+		expect(results[0]?.averageMinutes).toBe(480);
+		expect(results[0]?.averageAboveStandard).toBe(false);
+	});
+
+	it("基準との比較は切り上げ前の値で行う", () => {
+		const records: DayRecord[] = [
+			{ day: 1, isHoliday: false, workMinutes: 34 },
+			{ day: 2, isHoliday: false, workMinutes: null },
+			{ day: 3, isHoliday: false, workMinutes: null },
+			{ day: 4, isHoliday: false, workMinutes: null },
+			{ day: 5, isHoliday: false, workMinutes: null },
+			{ day: 6, isHoliday: false, workMinutes: null },
+		];
+		// 基準 200 ÷ 6 = 33.33… 分。平均は 166 ÷ 5 = 33.2 分（表示は切り上げて 34 分）
+		const results = calculate(records, 200, displayed, {
+			...displayed,
+			day: 1,
+		});
+		expect(results[0]?.averageMinutes).toBe(34);
+		expect(results[0]?.averageAboveStandard).toBe(false);
+	});
+
+	it("今日以外の行と規定時間が不明な場合は averageAboveStandard にしない", () => {
+		const today = { ...displayed, day: 3 };
+		const results = calculate(week(), 40 * H, displayed, today);
+		expect(
+			results.filter((r) => !r.isToday).some((r) => r.averageAboveStandard),
+		).toBe(false);
+		const unknown = calculate(week(), null, displayed, today);
+		expect(unknown[2]?.averageAboveStandard).toBe(false);
+	});
+
 	it("未来の月は何も表示しない", () => {
 		const today = { year: 2030, month: 3, day: 20 };
 		const results = calculate(week(), 40 * H, displayed, today);

@@ -15,8 +15,6 @@ import type { DayResult, YearMonthDay } from "./types";
 
 const LOG_PREFIX = "[jobcan-ext]";
 const ADDED_ATTR = "data-jce-added";
-/** 1 日平均がこれを超えたら強調する（分） */
-const AVERAGE_WARNING_MINUTES = 8 * 60;
 
 function main(): void {
 	const table = findAttendanceTable(document);
@@ -104,6 +102,7 @@ function remainingLines(
 	remainingMinutes: number | null,
 	averageMinutes: number | null,
 	remainingWorkDays: number | null,
+	averageAboveStandard: boolean,
 ): HTMLDivElement[] {
 	if (remainingMinutes === null) {
 		return [];
@@ -124,7 +123,7 @@ function remainingLines(
 		lines.push(
 			line(
 				`平均 ${formatDuration(averageMinutes)}`,
-				averageMinutes > AVERAGE_WARNING_MINUTES ? "jce-warn" : undefined,
+				averageAboveStandard ? "jce-warn" : undefined,
 			),
 		);
 	}
@@ -141,6 +140,7 @@ function appendDayCells(row: HTMLTableRowElement, result: DayResult): void {
 				result.remainingMinutes,
 				result.averageMinutes,
 				result.remainingWorkDays,
+				result.averageAboveStandard,
 			),
 		);
 		if (result.remainingWorkDays !== null) {

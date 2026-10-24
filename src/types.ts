@@ -29,6 +29,8 @@ export type DayResult = {
 	remainingWorkDays: number | null;
 	/** 1 日平均（分、切り上げ）。今日の行以外、残り勤務日数 0、残りが 0 以下のときは null */
 	averageMinutes: number | null;
+	/** 1 日平均が基準（月規定労働時間 ÷ その月の労働日数）を超えていれば true */
+	averageAboveStandard: boolean;
 };
 
 /** 年月日（月は 1〜12） */

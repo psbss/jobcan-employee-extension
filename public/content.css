@@ -15,7 +15,7 @@
 	font-weight: bold;
 }
 
-/* 1日平均が閾値を超えている */
+/* 1日平均が基準（月規定労働時間 ÷ 労働日数）を超えている */
 .jce-warn {
 	color: #dc3545;
 	font-weight: bold;

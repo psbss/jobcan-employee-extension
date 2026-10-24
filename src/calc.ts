@@ -30,6 +30,7 @@ export function lastVisibleDay(
  *
  * - 残り勤務日数は、今日より後の休日でない日の数。
  * - ただし今日が勤務日で労働時間がまだ空（勤務中・未打刻）の場合は、今日自身も含める。
+ * - 1 日平均の基準は、月規定労働時間 ÷ その月の労働日数（休日区分が空の日の数）。
  *
  * @param records 出勤簿の行（日付順）
  * @param requiredMinutes 月規定労働時間（分）。不明なら null
@@ -54,6 +55,8 @@ export function calculate(
 			(workDaysAfter[i + 1] ?? 0) + (next && !next.isHoliday ? 1 : 0);
 	}
 
+	const workDays = records.filter((record) => !record.isHoliday).length;
+
 	let cumulative = 0;
 	return records.map((record, i) => {
 		cumulative += record.workMinutes ?? 0;
@@ -67,6 +70,7 @@ export function calculate(
 				remainingMinutes: null,
 				remainingWorkDays: null,
 				averageMinutes: null,
+				averageAboveStandard: false,
 			};
 		}
 
@@ -82,6 +86,7 @@ export function calculate(
 				remainingMinutes,
 				remainingWorkDays: null,
 				averageMinutes: null,
+				averageAboveStandard: false,
 			};
 		}
 
@@ -95,6 +100,12 @@ export function calculate(
 			remainingMinutes,
 			remainingWorkDays,
 			averageMinutes: average(remainingMinutes, remainingWorkDays),
+			averageAboveStandard: isAboveStandard(
+				remainingMinutes,
+				remainingWorkDays,
+				requiredMinutes,
+				workDays,
+			),
 		};
 	});
 }
@@ -111,4 +122,26 @@ function average(
 		return null;
 	}
 	return Math.ceil(remainingMinutes / remainingWorkDays);
+}
+
+/**
+ * 残り時間 ÷ 残り勤務日数 が、月規定労働時間 ÷ 労働日数 を超えているか。
+ * 切り上げ前の値で比べるため、割り算をせず掛け算で比較する。
+ */
+function isAboveStandard(
+	remainingMinutes: number | null,
+	remainingWorkDays: number,
+	requiredMinutes: number | null,
+	workDays: number,
+): boolean {
+	if (
+		remainingMinutes === null ||
+		requiredMinutes === null ||
+		remainingMinutes <= 0 ||
+		remainingWorkDays === 0 ||
+		workDays === 0
+	) {
+		return false;
+	}
+	return remainingMinutes * workDays > requiredMinutes * remainingWorkDays;
 }
