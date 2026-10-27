@@ -29,10 +29,10 @@
 ### Chrome
 1. GitHub Release より `Chrome.zip` をダウンロードして、展開する
 2. `chrome://extensions` を開き、右上の「デベロッパーモード」を有効にする
-3. 「パッケージ化されていない拡張機能を読み込む」でダウンロードした `Chrome.zip` を選ぶ
+3. 「パッケージ化されていない拡張機能を読み込む」で、展開してできた `dist` フォルダを選ぶ
 
 ### Firefox
-TBA
+[Firefox Add-ons](https://addons.mozilla.org/ja/firefox/addon/jobcan-employee-extension/) からインストールする
 
 
 ## Development
