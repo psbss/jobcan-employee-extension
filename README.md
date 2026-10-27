@@ -32,7 +32,7 @@
 3. 「パッケージ化されていない拡張機能を読み込む」で、展開してできた `dist` フォルダを選ぶ
 
 ### Firefox
-TBA
+[Firefox Add-ons](https://addons.mozilla.org/ja/firefox/addon/jobcan-employee-extension/) からインストールする
 
 
 ## Development
